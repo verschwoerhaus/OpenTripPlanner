@@ -142,8 +142,7 @@ class Stats implements Cloneable {
         for (TripTimes tripTimes : pattern.scheduledTimetable.tripTimes) {
             int depart = tripTimes.getDepartureTime(stop0);
             int arrive = tripTimes.getArrivalTime(stop1);
-            if (window.includes (depart) && 
-                window.includes (arrive) && 
+            if (window.includes (depart) &&
                 window.servicesRunning.get(tripTimes.serviceCode)) {
                 int t = arrive - depart;
                 if (t < s.min) s.min = t;
