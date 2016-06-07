@@ -283,8 +283,8 @@ public class Ride {
             int arrival = arrivalsIterator.next();
             // On transfers the access stats should have max=min=avg
             // We use the min, which would be best if min != max since it should only relax the bounds somewhat.
-            int boardTime = arrival + accessStats.min + ProfileRouter.SLACK;
-            while (departure <= boardTime) {
+            int boardTime = arrival + accessStats.min;
+            while (departure <= (boardTime + ProfileRouter.SLACK)) {
                 if (!departureIterator.hasNext()) break ARRIVAL;
                 departure = departureIterator.next();
             }
