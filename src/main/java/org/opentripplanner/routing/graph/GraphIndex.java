@@ -605,31 +605,29 @@ public class GraphIndex {
         }
 
         private void handleStop(Stop stop, int distance) {
+            if (!includeStops) return;
             if (filterByStops != null && !filterByStops.contains(stop.getId())) return;
-            if (includeStops && !seenStops.contains(stop.getId()) && (filterByModes == null || stopHasRoutesWithMode(stop, filterByModes))) {
-                placesFound.add(new PlaceAndDistance(stop, distance));
-                seenStops.add(stop.getId());
-            }
+            if (filterByModes != null && !stopHasRoutesWithMode(stop, filterByModes)) return;
+            if (seenStops.contains(stop.getId())) return;
+            seenStops.add(stop.getId());
+            placesFound.add(new PlaceAndDistance(stop, distance));
         }
 
         private void handleDepartureRows(Stop stop, int distance) {
-            if (includeDepartureRows) {
-                List<TripPattern> patterns = patternsForStop.get(stop)
-                    .stream()
-                    .filter(pattern -> filterByModes == null || filterByModes.contains(pattern.mode))
-                    .filter(pattern -> filterByRoutes == null || filterByRoutes.contains(pattern.route.getId()))
-                    .filter(pattern -> pattern.canBoard(pattern.getStopIndex(stop)))
-                    .collect(toList());
+            if (!includeDepartureRows) return;
 
-                for (TripPattern pattern : patterns) {
-                    String seenKey = GtfsLibrary.convertIdToString(pattern.route.getId()) + ":" + pattern.code;
-                    if (!seenDepartureRows.contains(seenKey)) {
-                        DepartureRow row = new DepartureRow(stop, pattern);
-                        PlaceAndDistance place = new PlaceAndDistance(row, distance);
-                        placesFound.add(place);
-                        seenDepartureRows.add(seenKey);
-                    }
-                }
+            List<TripPattern> patterns = patternsForStop.get(stop)
+                .stream()
+                .filter(pattern -> filterByModes == null || filterByModes.contains(pattern.mode))
+                .filter(pattern -> filterByRoutes == null || filterByRoutes.contains(pattern.route.getId()))
+                .filter(pattern -> pattern.canBoard(pattern.getStopIndex(stop)))
+                .collect(toList());
+
+            for (TripPattern pattern : patterns) {
+                String seenKey = GtfsLibrary.convertIdToString(pattern.route.getId()) + ":" + pattern.code;
+                if (seenDepartureRows.contains(seenKey)) continue;
+                seenDepartureRows.add(seenKey);
+                placesFound.add(new PlaceAndDistance(new DepartureRow(stop, pattern), distance));
             }
         }
 
