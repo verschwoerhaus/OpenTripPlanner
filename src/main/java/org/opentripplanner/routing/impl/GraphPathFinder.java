@@ -37,8 +37,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -255,6 +257,7 @@ public class GraphPathFinder {
             places.addAll(request.intermediatePlaces);
             places.add(request.to);
             List<GraphPath> ret = new ArrayList<>();
+            Set<AgencyAndId> bannedTrips = new HashSet<>();
 
             int firstPlaceIndex = (request.arriveBy ? places.size() - 1 : 1);
             RoutingRequest firstRequest = request.clone();
@@ -287,6 +290,7 @@ public class GraphPathFinder {
                     intermediateRequest.dateTime = time;
                     intermediateRequest.from = places.get(placeIndex - 1);
                     intermediateRequest.to = places.get(placeIndex);
+                    bannedTrips.forEach(intermediateRequest::banTrip);
                     intermediateRequest.rctx = null;
 
                     if ( fromVertices[placeIndex - 1] != null && toVertices[placeIndex] != null ) {
@@ -315,6 +319,7 @@ public class GraphPathFinder {
 
                     GraphPath path = partialPaths.get(0);
                     paths.add(path);
+                    bannedTrips.addAll(path.getTrips());
                     time = (request.arriveBy ? path.getStartTime() : path.getEndTime());
                     placeIndex += (request.arriveBy ? -1 : +1);
                 }
