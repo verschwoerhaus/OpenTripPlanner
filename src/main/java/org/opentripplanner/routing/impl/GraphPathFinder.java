@@ -350,7 +350,7 @@ public class GraphPathFinder {
             lastState = newPath.states.getLast();
             // add a leg-switching state
             LegSwitchingEdge legSwitchingEdge = new LegSwitchingEdge(lastVertex, lastVertex);
-            lastState = legSwitchingEdge.traverse(lastState);
+            lastState = legSwitchingEdge.traverse(lastState, path.getStartTime());
             newPath.edges.add(legSwitchingEdge);
             newPath.states.add(lastState);
             // add the next subpath
