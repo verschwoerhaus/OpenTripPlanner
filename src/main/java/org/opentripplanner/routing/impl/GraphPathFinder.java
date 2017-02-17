@@ -332,6 +332,7 @@ public class GraphPathFinder {
 
                 ret.add(joinPaths(paths));
             }
+            Collections.sort(ret, new PathComparator(request.arriveBy));
             return ret;
         } else {
             return getPaths(request);
