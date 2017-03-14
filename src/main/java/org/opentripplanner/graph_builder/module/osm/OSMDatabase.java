@@ -669,9 +669,13 @@ public class OSMDatabase implements OpenStreetMapContentHandler {
                 Ring ring = new Ring(way.getNodeRefs(), nodesById);
                 wayForRing.put(ring, way);
                 for (List<Ring> group : groups) {
-                    if (ring.toJtsPolygon().intersects(group.get(0).toJtsPolygon())) {
-                        group.add(ring);
-                        break;
+                    try {
+                        if (ring.toJtsPolygon().intersects(group.get(0).toJtsPolygon())) {
+                            group.add(ring);
+                            break;
+                        }
+                    } catch (Ring.RingConstructionException e) {
+                        continue;
                     }
                 }
                 groups.add(new ArrayList<>(Collections.singletonList(ring)));
@@ -682,7 +686,7 @@ public class OSMDatabase implements OpenStreetMapContentHandler {
                     List<OSMWay> outerRingWays = group.stream().map(wayForRing::get)
                         .collect(Collectors.toList());
                     newArea(new Area(relation, outerRingWays, innerWays, nodesById));
-                } catch (Area.AreaConstructionException|Ring.RingConstructionException e) {
+                } catch (Area.AreaConstructionException e) {
                     continue;
                 }
             }
