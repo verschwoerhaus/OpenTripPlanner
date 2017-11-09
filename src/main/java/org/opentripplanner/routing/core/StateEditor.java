@@ -266,7 +266,11 @@ public class StateEditor {
     public void setEnteredNoThroughTrafficArea() {
         child.stateData.enteredNoThroughTrafficArea = true;
     }
-    
+
+    public void resetEnteredNoThroughTrafficArea() {
+        child.stateData.enteredNoThroughTrafficArea = false;
+    }
+
     /**
      * Initial wait time is recorded so it can be subtracted out of paths in lieu of "reverse optimization".
      * This happens in Analyst.

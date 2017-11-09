@@ -233,6 +233,7 @@ public class TransitBoardAlight extends TablePatternEdge implements OnboardEdge 
                     }
                 }
             }            
+            s1.resetEnteredNoThroughTrafficArea();
 
             s1.setBackMode(getMode());
             final State nextState = s1.makeState();
@@ -388,6 +389,8 @@ public class TransitBoardAlight extends TablePatternEdge implements OnboardEdge 
                 return optimized;
             }
             
+            s1.resetEnteredNoThroughTrafficArea();
+
             /* If we didn't return an optimized path, return an unoptimized one. */
             return s1.makeState();
         }
