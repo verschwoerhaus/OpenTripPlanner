@@ -101,6 +101,12 @@ public class IndexGraphQLSchema {
         }
     });
 
+    public static GraphQLScalarType unixTimestampSecondsScalar = new GraphQLScalarType("UnixTimestampSeconds", "Unix timestamp in seconds. The value appears in JSON as a integer.", Scalars.GraphQLLong.getCoercing());
+
+    public static GraphQLScalarType unixTimestampMillisecondsScalar = new GraphQLScalarType("UnixTimestampMilliseconds", "Unix timestamp in milliseconds. The value appears in JSON as a integer.", Scalars.GraphQLLong.getCoercing());
+
+    public static GraphQLScalarType secondsScalar = new GraphQLScalarType("Second", "Time in seconds. The value appears in JSON as a integer.", Scalars.GraphQLInt.getCoercing());
+
     public static GraphQLEnumType locationTypeEnum = GraphQLEnumType.newEnum()
         .name("LocationType")
         .description("Identifies whether this stop represents a stop or station.")
