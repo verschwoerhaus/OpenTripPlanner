@@ -105,7 +105,7 @@ public class IndexGraphQLSchema {
 
     public static GraphQLScalarType unixTimestampMillisecondsScalar = new GraphQLScalarType("UnixTimestampMilliseconds", "Unix timestamp in milliseconds. The value appears in JSON as an integer.", Scalars.GraphQLLong.getCoercing());
 
-    public static GraphQLScalarType secondsScalar = new GraphQLScalarType("Second", "Time in seconds. The value appears in JSON as an integer.", Scalars.GraphQLInt.getCoercing());
+    public static GraphQLScalarType secondsScalar = new GraphQLScalarType("SecondsSinceMidnight", "Time in seconds since midnight. The value appears in JSON as an integer.", Scalars.GraphQLInt.getCoercing());
 
     public static GraphQLEnumType locationTypeEnum = GraphQLEnumType.newEnum()
         .name("LocationType")
