@@ -63,13 +63,8 @@ public class SmooveBikeRentalDataSource extends GenericJsonBikeRentalDataSource 
             log.warn("Error parsing bike rental station " + station.id, e);
             return null;
         }
-        if (!node.path("operative").asText().equals("true")) {
-            station.bikesAvailable = 0;
-            station.spacesAvailable = 0;
-        } else {
-            station.bikesAvailable = node.path("avl_bikes").asInt();
-            station.spacesAvailable = node.path("free_slots").asInt();
-        }
+        station.bikesAvailable = 5;
+        station.spacesAvailable = 5;
         return station;
     }
 }
